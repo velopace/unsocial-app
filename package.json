@@ -1,0 +1,23 @@
+{
+  "name": "social-media-microservice",
+  "version": "1.0.0",
+  "description": "Github repository for the social media microservice app",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/velopace/social-media-microservice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/velopace/social-media-microservice/issues"
+  },
+  "homepage": "https://github.com/velopace/social-media-microservice#readme",
+  "devDependencies": {
+    "husky": "^8.0.2"
+  }
+}
