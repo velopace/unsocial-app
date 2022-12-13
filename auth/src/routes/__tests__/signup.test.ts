@@ -94,3 +94,24 @@ describe('test validity of password input', () => {
       .expect(200);
   });
 });
+
+describe('test sanitization of email input', () => {
+  it('should not contain uppercase letters in the domain of the email', async () => {
+    const normalizedEmail = 'test@test.com';
+    const response = await request(app)
+      .post(SIGNUP_ROUTE)
+      .send({ email: 'test@TEST.COM', password: 'Validpassword1' })
+      .expect(200);
+
+    expect(response.body.email).toEqual(normalizedEmail);
+  });
+});
+
+describe('test sanitization of password input', () => {
+  it('should not contan unescaped chracters', async () => {
+    await request(app)
+      .post(SIGNUP_ROUTE)
+      .send({ email: 'test@test.com', password: 'Validpassword1<>\'"' })
+      .expect(200);
+  });
+});
