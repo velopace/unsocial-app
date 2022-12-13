@@ -3,44 +3,6 @@ import app from '../../app';
 import { SIGNUP_ROUTE } from '../signup';
 
 /**
- * Available methods in /api/auth/signup:
- *    - POST
- */
-describe('tests signup route method availability', () => {
-  let email = '';
-  let password = '';
-
-  beforeAll(() => {
-    email = 'test@test.com';
-    password = 'Validpassword1';
-  });
-
-  it('should return 405 for GET, PUT, PATCH, DELETE requests', async () => {
-    await request(app).get(SIGNUP_ROUTE).send({ email, password }).expect(405);
-    await request(app).put(SIGNUP_ROUTE).send({ email, password }).expect(405);
-    await request(app)
-      .patch(SIGNUP_ROUTE)
-      .send({ email, password })
-      .expect(405);
-    await request(app)
-      .delete(SIGNUP_ROUTE)
-      .send({ email, password })
-      .expect(405);
-  });
-
-  it('should return 200 for POST, OPTIONS requests', async () => {
-    await request(app).post(SIGNUP_ROUTE).send({ email, password }).expect(200);
-    await request(app).options(SIGNUP_ROUTE).expect(200);
-  });
-
-  it('should return POST and OPTIONS as the only allowed method from an OPTIONS request', async () => {
-    const response = await request(app).options(SIGNUP_ROUTE).expect(200);
-    expect(response.get('Access-Control-Allow-Methods')).toContain('POST');
-    expect(response.get('Access-Control-Allow-Methods')).toContain('OPTIONS');
-  });
-});
-
-/**
  * Valid email conditions:
  *    - Standard email formats from 'email-validator' package
  */
