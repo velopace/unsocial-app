@@ -1,3 +1,4 @@
+import { BaseCustomError, DuplicatedEmail } from '../../errors';
 import User from '../user';
 
 it('should not save a new user if the email is already in the database', async () => {
@@ -10,12 +11,19 @@ it('should not save a new user if the email is already in the database', async (
   expect(newUser1).toBeDefined();
   expect(newUser1.email).toEqual(userInfo.email);
 
-  let err;
+  let err: DuplicatedEmail | undefined;
   try {
     await User.create(userInfo); // ERROR
-  } catch (e) {
+  } catch (e: any) {
     err = e;
   }
 
+  const serializeErrorOutput = err ? err.serializeErrorOutput() : undefined;
+
   expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(BaseCustomError);
+  expect(serializeErrorOutput).toBeDefined();
+  expect(serializeErrorOutput?.errors[0].message).toEqual(
+    'The email is already in the database'
+  );
 });
