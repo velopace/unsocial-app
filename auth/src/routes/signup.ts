@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import InvalidInput from '../errors/invalid-input';
 import { User } from '../models';
 
 export const SIGNUP_ROUTE = '/api/auth/signup';
@@ -32,7 +33,7 @@ signUpRouter.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(422).send({});
+      throw new InvalidInput();
     }
 
     if (/.+@[A-Z]/g.test(req.body.email)) {
@@ -45,15 +46,12 @@ signUpRouter.post(
 
     const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
+    try {
+      const newUser = await User.create({ email, password });
+      return res.status(201).send({ email: newUser.email });
+    } catch (e) {
       return res.sendStatus(422);
     }
-
-    const newUser = await User.create({ email, password });
-
-    return res.status(201).send({ email: newUser.email });
   }
 );
 
