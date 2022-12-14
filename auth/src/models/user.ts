@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { DuplicatedEmail } from '../errors';
 
-export type UserDocument = {
+export type UserDocument = mongoose.Document & {
   email: string;
   password: string;
 };
